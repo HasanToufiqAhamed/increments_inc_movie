@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,9 @@ import 'package:increments_inc_movie/pages/home_page.dart';
 import 'home_pages/movie_main_page.dart';
 
 class OtpPage extends StatefulWidget {
-  const OtpPage({Key? key}) : super(key: key);
+  String phoneNumber;
+
+  OtpPage({required this.phoneNumber});
 
   @override
   _OtpPageState createState() => _OtpPageState();
@@ -21,7 +24,45 @@ class _OtpPageState extends State<OtpPage> {
   TextEditingController oneText = TextEditingController();
   TextEditingController twoText = TextEditingController();
   TextEditingController threeText = TextEditingController();
-  TextEditingController fourText = new TextEditingController();
+  TextEditingController fourText = TextEditingController();
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String? _verificationCode;
+
+  @override
+  void initState() {
+    super.initState();
+    _verifyPhone();
+  }
+
+  _verifyPhone() async {
+    print('come to me');
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+88' + widget.phoneNumber,
+      timeout: Duration(seconds: 120),
+      verificationCompleted: (PhoneAuthCredential credential) {
+        print('verificationCompleted');
+
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print('faild');
+      },
+      codeSent: (String? verficationID, int? resendToken) {
+        print('codeSent');
+
+        setState(() {
+          _verificationCode = verficationID;
+        });
+      },
+      codeAutoRetrievalTimeout: (String verificationID) {
+        print('codeAutoRetrievalTimeout');
+
+        setState(() {
+          _verificationCode = verificationID;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +113,6 @@ class _OtpPageState extends State<OtpPage> {
                 children: [
                   IntrinsicWidth(
                     child: Container(
-                      width: 60,
                       decoration: BoxDecoration(
                         color: MyColors.backgroundColorReg.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(15),
@@ -113,11 +153,10 @@ class _OtpPageState extends State<OtpPage> {
                     ),
                   ),
                   SizedBox(
-                    width: 16,
+                    width: 15,
                   ),
                   IntrinsicWidth(
                     child: Container(
-                      width: 60,
                       decoration: BoxDecoration(
                         color: MyColors.backgroundColorReg.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(15),
@@ -136,7 +175,7 @@ class _OtpPageState extends State<OtpPage> {
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                         ],
                         maxLines: 1,
-                        maxLength: 1,
+                        maxLength: 2,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
@@ -150,18 +189,17 @@ class _OtpPageState extends State<OtpPage> {
                         onChanged: (value) {
                           if (value == '') {
                             FocusScope.of(context).requestFocus(oneFocus);
-                          } else
+                          } else if (twoText.text.length == 2)
                             FocusScope.of(context).requestFocus(threeFocus);
                         },
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 16,
+                    width: 15,
                   ),
                   IntrinsicWidth(
                     child: Container(
-                      width: 60,
                       decoration: BoxDecoration(
                         color: MyColors.backgroundColorReg.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(15),
@@ -195,18 +233,17 @@ class _OtpPageState extends State<OtpPage> {
                         onChanged: (value) {
                           if (value == '') {
                             FocusScope.of(context).requestFocus(twoFocus);
-                          } else
+                          } else if (threeText.text.length == 2)
                             FocusScope.of(context).requestFocus(fourFocus);
                         },
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 16,
+                    width: 15,
                   ),
                   IntrinsicWidth(
                     child: Container(
-                      width: 60,
                       decoration: BoxDecoration(
                         color: MyColors.backgroundColorReg.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(15),
@@ -247,27 +284,73 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 24,),
+              SizedBox(
+                height: 24,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Resend in', style: TextStyle(color: MyColors.backgroundColorReg, fontSize: 16),),
-                  SizedBox(width: 6,),
-                  Text('30:00', style: TextStyle(color: Colors.white, fontSize: 16),),
-                  SizedBox(width: 6,),
-                  Text('sec', style: TextStyle(color: MyColors.backgroundColorReg, fontSize: 16),),
+                  Text(
+                    'Resend in',
+                    style: TextStyle(
+                        color: MyColors.backgroundColorReg, fontSize: 16),
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Text(
+                    '30:00',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Text(
+                    'sec',
+                    style: TextStyle(
+                        color: MyColors.backgroundColorReg, fontSize: 16),
+                  ),
                 ],
               ),
               Spacer(),
               InkWell(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  /*Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            HomePage()
-                    ),
-                  );
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );*/
+                  if (oneText.text.isEmpty ||
+                      twoText.text.isEmpty ||
+                      twoText.text.length < 2 ||
+                      threeText.text.isEmpty ||
+                      threeText.text.length < 2 ||
+                      fourText.text.isEmpty) {
+                    print('Empty');
+                  } else {
+                    String otpCode = oneText.text.toString() +
+                        twoText.text.toString() +
+                        threeText.text.toString() +
+                        fourText.text.toString();
+                    try {
+                      await auth
+                          .signInWithCredential(
+                        PhoneAuthProvider.credential(
+                            verificationId: _verificationCode!,
+                            smsCode: otpCode),
+                      )
+                          .then((value) async {
+                        if (value.user != null) {
+                          print('phone auth done');
+                        }
+                      });
+                    } catch (e) {
+                      /*setState(() {
+                      loading = false;
+                    });
+                    Fluttertoast.showToast(msg: 'invalid OTP');*/
+                      print(e.toString());
+                    }
+                  }
                 },
                 child: Container(
                   width: double.maxFinite,

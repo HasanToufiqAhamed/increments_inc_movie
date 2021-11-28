@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/pages/home_pages/movie_main_page.dart';
+import 'package:increments_inc_movie/pages/home_pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                   MovieMainPage(),
                   MovieMainPage(),
                   MovieMainPage(),
-                  MovieMainPage(),
+                  ProfilePage(),
                 ],
               ),
             ),
