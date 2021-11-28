@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:untitled/activity/incre/colors.dart';
-import 'package:untitled/activity/incre/movie_main_page.dart';
+import 'package:increments_inc_movie/cons_file/my_colors.dart';
+
+import 'movie_main_page.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);
@@ -13,13 +13,13 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
-  FocusNode oneFocus = new FocusNode();
-  FocusNode twoFocus = new FocusNode();
-  FocusNode threeFocus = new FocusNode();
-  FocusNode fourFocus = new FocusNode();
-  TextEditingController oneText = new TextEditingController();
-  TextEditingController twoText = new TextEditingController();
-  TextEditingController threeText = new TextEditingController();
+  FocusNode oneFocus = FocusNode();
+  FocusNode twoFocus = FocusNode();
+  FocusNode threeFocus = FocusNode();
+  FocusNode fourFocus = FocusNode();
+  TextEditingController oneText = TextEditingController();
+  TextEditingController twoText = TextEditingController();
+  TextEditingController threeText = TextEditingController();
   TextEditingController fourText = new TextEditingController();
 
   @override
@@ -32,10 +32,15 @@ class _OtpPageState extends State<OtpPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                CupertinoIcons.back,
-                color: Colors.white,
-                size: 24,
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  CupertinoIcons.back,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
               SizedBox(
                 height: 25,
