@@ -35,84 +35,102 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Text(
-                  'Increments Inc.',
-                  style: TextStyle(
-                    color: MyColors.mainColor,
-                    fontSize: 32,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            children: [
+              Image.asset('assets/images/component.png'),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 42,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Increments Inc.',
+                            style: TextStyle(
+                              color: MyColors.mainColor,
+                              fontSize: 32,
+                            ),
+                          ),
+                          SizedBox(width: 34,)
+                        ],
+                      ),
+                      const Text(
+                        'Movies in your palm!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      ),
+                      SizedBox(height: 41,),
+                      Text(
+                        f_text,
+                        style: const TextStyle(
+                          color: MyColors.backgroundColorReg,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            const Text(
-              'Movies in your palm!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
               ),
-            ),
-            Text(
-              f_text,
-              style: const TextStyle(
-                  color: MyColors.backgroundColorReg, fontSize: 18),
-            ),
-            Spacer(),
-            Container(
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: MyColors.backgroundColorReg,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              padding: EdgeInsets.all(1),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        child: Text(
-                          'Register',
-                          style: TextStyle(
-                            color: MyColors.darkTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        child: Text(
-                          'Sign in',
-                          style: TextStyle(
+              Spacer(),
+              Container(
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  color: MyColors.backgroundColorReg,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                padding: EdgeInsets.all(1),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              color: MyColors.darkTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                            'Sign in',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
