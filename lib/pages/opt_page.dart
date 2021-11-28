@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
+import 'package:increments_inc_movie/pages/home_page.dart';
 
-import 'movie_main_page.dart';
+import 'home_pages/movie_main_page.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);
@@ -264,7 +265,7 @@ class _OtpPageState extends State<OtpPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            MovieMainPage()
+                            HomePage()
                     ),
                   );
                 },
