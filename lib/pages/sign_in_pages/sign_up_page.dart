@@ -31,6 +31,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -199,23 +201,25 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already have account?',
-                    style: TextStyle(
-                        color: MyColors.backgroundColorReg, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    'Log in',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ],
-              ),
+              keyboardIsOpened
+                  ? SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have account?',
+                          style: TextStyle(
+                              color: MyColors.backgroundColorReg, fontSize: 16),
+                        ),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          'Log in',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ],
+                    ),
               SizedBox(
                 height: 16,
               ),
@@ -240,7 +244,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   } else {
                     try {
                       setState(() {
-                        loading=true;
+                        loading = true;
                       });
                       await auth
                           .createUserWithEmailAndPassword(
@@ -255,7 +259,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           MaterialPageRoute(
                             builder: (context) => HomePage(),
                           ),
-                              (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                         );
                       });
                     } on FirebaseAuthException catch (e) {

@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/helper/checker.dart';
-import 'package:increments_inc_movie/helper/sign_in_helper/facebook_sign_in.dart';
 import 'package:increments_inc_movie/helper/sign_in_helper/google_sign_in.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
 
@@ -31,10 +29,11 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpened = MediaQuery.of(context).viewInsets.bottom != 0.0;
 
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,135 +51,157 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(
                 height: 25,
               ),
-              Container(
-                padding: EdgeInsets.only(left: 11),
-                child: Text(
-                  'Let’s sign you in.',
-                  style: TextStyle(color: MyColors.mainColor, fontSize: 32),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 14),
-                child: Text(
-                  'Welcome back.\nYou’ve been missed!',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ),
-              Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                  color: MyColors.backgroundColorReg.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: MyColors.backgroundColorReg.withOpacity(0.5),
-                    width: 1,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 11),
+                        child: Text(
+                          'Let’s sign you in.',
+                          style: TextStyle(
+                              color: MyColors.mainColor, fontSize: 32),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 14),
+                        child: Text(
+                          'Welcome back.\nYou’ve been missed!',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 42,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: oneFocus,
+                          controller: email,
+                          keyboardType: TextInputType.emailAddress,
+                          style: TextStyle(color: Colors.white),
+                          onFieldSubmitted: (v) {
+                            FocusScope.of(context).requestFocus(twoFocus);
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Phone or email',
+                            hintStyle: TextStyle(
+                              color: MyColors.backgroundColorReg,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            focusedBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: twoFocus,
+                          controller: password,
+                          keyboardType: TextInputType.visiblePassword,
+                          style: TextStyle(color: Colors.white),
+                          obscureText: _showPassword,
+                          onFieldSubmitted: null,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Password',
+                            hintStyle: TextStyle(
+                              color: MyColors.backgroundColorReg,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            focusedBorder: InputBorder.none,
+                            suffixIcon: IconButton(
+                              icon: Icon(CupertinoIcons.eye_solid),
+                              color: this._showPassword
+                                  ? MyColors.backgroundColorReg
+                                  : MyColors.backgroundColor,
+                              onPressed: () {
+                                setState(() {
+                                  this._showPassword = !this._showPassword;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          Spacer(),
+                          Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                                color: MyColors.backgroundColorReg,
+                                fontSize: 16),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            'Reset',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  focusNode: oneFocus,
-                  controller: email,
-                  keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(color: Colors.white),
-                  onFieldSubmitted: (v) {
-                    FocusScope.of(context).requestFocus(twoFocus);
-                  },
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Phone or email',
-                    hintStyle: TextStyle(
-                      color: MyColors.backgroundColorReg,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+              ),
+              keyboardIsOpened
+                  ? SizedBox()
+                  : Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don’t have an account?',
+                              style: TextStyle(
+                                  color: MyColors.backgroundColorReg,
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              'Register',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                      ],
                     ),
-                    focusedBorder: InputBorder.none,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: MyColors.backgroundColorReg.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: MyColors.backgroundColorReg.withOpacity(0.5),
-                    width: 1,
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  focusNode: twoFocus,
-                  controller: password,
-                  keyboardType: TextInputType.visiblePassword,
-                  style: TextStyle(color: Colors.white),
-                  obscureText: _showPassword,
-                  onFieldSubmitted: null,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Password',
-                    hintStyle: TextStyle(
-                      color: MyColors.backgroundColorReg,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    focusedBorder: InputBorder.none,
-                    suffixIcon: IconButton(
-                      icon: Icon(CupertinoIcons.eye_solid),
-                      color: this._showPassword
-                          ? MyColors.backgroundColorReg
-                          : MyColors.backgroundColor,
-                      onPressed: () {
-                        setState(() {
-                          this._showPassword = !this._showPassword;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Row(
-                children: [
-                  Spacer(),
-                  Text(
-                    'Forgot password?',
-                    style: TextStyle(
-                        color: MyColors.backgroundColorReg, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    'Reset',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ],
-              ),
-              Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Don’t have an account?',
-                    style: TextStyle(
-                        color: MyColors.backgroundColorReg, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 16,
-              ),
               InkWell(
                 onTap: () async {
                   String finalEmail = email.text.toString();
@@ -213,7 +234,7 @@ class _SignInPageState extends State<SignInPage> {
                           MaterialPageRoute(
                             builder: (context) => HomePage(),
                           ),
-                              (Route<dynamic> route) => false,
+                          (Route<dynamic> route) => false,
                         );
                         setState(() {
                           loading = false;
@@ -254,76 +275,82 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                 ),
               ),
-              SizedBox(
-                height: 16,
-              ),
-              InkWell(
-                onTap: () {
-                  signInWithFacebook().then((result) {
-                    if (result.user != null) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HomePage();
-                          },
+              keyboardIsOpened
+                  ? SizedBox()
+                  : Column(
+                      children: [
+                        SizedBox(
+                          height: 16,
                         ),
-                      );
-                    }
-                  });
-                },
-                child: Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF2550A0),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Facebook',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              InkWell(
-                onTap: () {
-                  googleSignInHelper().then((result) {
-                    if (result.currentUser != null) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HomePage();
+                        InkWell(
+                          onTap: () {
+                            /*signInWithFacebook().then((result) {
+                        if (result.user != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return HomePage();
+                              },
+                            ),
+                          );
+                        }
+                      });*/
                           },
+                          child: Container(
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF2550A0),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Facebook',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
                         ),
-                      );
-                    }
-                  });
-                },
-                child: Container(
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF18A82E),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Google',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                        SizedBox(
+                          height: 16,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            googleSignInHelper().then((result) {
+                              if (result.currentUser != null) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return HomePage();
+                                    },
+                                  ),
+                                );
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF18A82E),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Google',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

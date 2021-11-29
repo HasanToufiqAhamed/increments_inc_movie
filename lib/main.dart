@@ -3,16 +3,28 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
-import 'package:increments_inc_movie/cons_file/text_file.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
-import 'package:increments_inc_movie/pages/sign_in_pages/sign_in_page.dart';
+import 'package:increments_inc_movie/provider/movie_list_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  ).then((_) {
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MovieListProvider()),
+      ],
+      child: MyApp(),
+    ));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +57,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     startTime();
+    readMovieList();
   }
 
   startTime() async {
@@ -78,5 +91,9 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
     );
+  }
+
+  void readMovieList() {
+    context.read<MovieListProvider>().getMovieList();
   }
 }

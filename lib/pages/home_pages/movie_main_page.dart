@@ -2,10 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/list/movie_list.dart';
 import 'package:increments_inc_movie/list/movie_slider_list.dart';
+import 'package:increments_inc_movie/model/movie_list_model.dart';
 import 'package:increments_inc_movie/pages/movie_details_page.dart';
+import 'package:increments_inc_movie/provider/movie_list_provider.dart';
+import 'package:provider/src/provider.dart';
 
 class MovieMainPage extends StatefulWidget {
   const MovieMainPage({Key? key}) : super(key: key);
@@ -15,8 +19,15 @@ class MovieMainPage extends StatefulWidget {
 }
 
 class _MovieMainPageState extends State<MovieMainPage> {
+
+  List<Result>? _movieList=[];
+
   @override
   Widget build(BuildContext context) {
+    final movieListProvider = context.watch<MovieListProvider>();
+
+    _movieList=movieListProvider.movieList.results;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -57,9 +68,9 @@ class _MovieMainPageState extends State<MovieMainPage> {
             child: Column(
               children: [
                 CarouselSlider.builder(
-                  itemCount: 5,
+                  itemCount: _movieList!.length,
                   itemBuilder: (ctx, index, realIdx) {
-                    return movieSliderListLayout();
+                    return movieSliderListLayout(movie: _movieList![index],);
                   },
                   options: CarouselOptions(
                     height: MediaQuery.of(context).size.width / 2.1,
@@ -83,13 +94,13 @@ class _MovieMainPageState extends State<MovieMainPage> {
                       Spacer(),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
+                          /*Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     MovieDetailsPage(imdbMovieId: 'tt4396862')
                             ),
-                          );
+                          );*/
                         },
                         child: Icon(
                           CupertinoIcons.right_chevron,
@@ -112,9 +123,9 @@ class _MovieMainPageState extends State<MovieMainPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    itemCount: _movieList!.length,
                     itemBuilder: (context, index) {
-                      return movieListLayout();
+                      return movieListLayout(movie: _movieList![index],);
                     },
                   ),
                 ),
@@ -150,9 +161,9 @@ class _MovieMainPageState extends State<MovieMainPage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    itemCount: _movieList!.length,
                     itemBuilder: (context, index) {
-                      return movieListLayout();
+                      return movieListLayout(movie: _movieList![index],);
                     },
                   ),
                 ),
