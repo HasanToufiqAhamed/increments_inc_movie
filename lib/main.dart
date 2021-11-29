@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/cons_file/text_file.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';

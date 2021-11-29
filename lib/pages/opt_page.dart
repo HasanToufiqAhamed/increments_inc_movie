@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
 
@@ -42,7 +43,6 @@ class _OtpPageState extends State<OtpPage> {
       timeout: Duration(seconds: 120),
       verificationCompleted: (PhoneAuthCredential credential) {
         print('verificationCompleted');
-
       },
       verificationFailed: (FirebaseAuthException e) {
         print('faild');
@@ -340,14 +340,19 @@ class _OtpPageState extends State<OtpPage> {
                       )
                           .then((value) async {
                         if (value.user != null) {
-                          print('phone auth done');
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       });
                     } catch (e) {
                       /*setState(() {
                       loading = false;
-                    });
-                    Fluttertoast.showToast(msg: 'invalid OTP');*/
+                    });*/
+                      Fluttertoast.showToast(msg: 'invalid OTP');
                       print(e.toString());
                     }
                   }

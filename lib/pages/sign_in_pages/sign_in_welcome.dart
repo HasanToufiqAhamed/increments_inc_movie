@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/cons_file/text_file.dart';
+import 'package:increments_inc_movie/pages/sign_in_pages/sign_up_page.dart';
 
 import 'sign_in_page.dart';
 
@@ -50,6 +51,7 @@ class _SignInWelcomeState extends State<SignInWelcome> {
                       SizedBox(height: 41,),
                       Text(
                         f_text,
+                        maxLines: 4,
                         style: const TextStyle(
                           color: MyColors.backgroundColorReg,
                           fontSize: 16,
@@ -71,19 +73,30 @@ class _SignInWelcomeState extends State<SignInWelcome> {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                              color: MyColors.darkTextColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SignUpPage()
+                            ),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Text(
+                              'Register',
+                              style: TextStyle(
+                                color: MyColors.darkTextColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),

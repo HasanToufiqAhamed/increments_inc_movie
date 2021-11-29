@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/helper/checker.dart';
+import 'package:increments_inc_movie/helper/sign_in_helper/facebook_sign_in.dart';
+import 'package:increments_inc_movie/helper/sign_in_helper/google_sign_in.dart';
+import 'package:increments_inc_movie/pages/home_page.dart';
 
 import '../opt_page.dart';
 
@@ -15,21 +19,21 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  FocusNode oneFocus = new FocusNode();
-  FocusNode twoFocus = new FocusNode();
-  TextEditingController email = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  FocusNode oneFocus = FocusNode();
+  FocusNode twoFocus = FocusNode();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   bool _showPassword = true;
+  bool loading = false;
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    bool loading = false;
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: MyColors.backgroundColor,
         body: Padding(
           padding: const EdgeInsets.all(30),
           child: Column(
@@ -83,7 +87,7 @@ class _SignInPageState extends State<SignInPage> {
                   },
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Phone, email or username',
+                    hintText: 'Phone or email',
                     hintStyle: TextStyle(
                       color: MyColors.backgroundColorReg,
                       fontWeight: FontWeight.bold,
@@ -112,9 +116,7 @@ class _SignInPageState extends State<SignInPage> {
                   keyboardType: TextInputType.visiblePassword,
                   style: TextStyle(color: Colors.white),
                   obscureText: _showPassword,
-                  onFieldSubmitted: (v) {
-                    FocusScope.of(context).requestFocus(twoFocus);
-                  },
+                  onFieldSubmitted: null,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Password',
@@ -188,9 +190,10 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OtpPage(
-                                phoneNumber: finalEmail,
-                              )),
+                        builder: (context) => OtpPage(
+                          phoneNumber: finalEmail,
+                        ),
+                      ),
                     );
                   } else if (finalEmail.isEmpty || finalPassword.isEmpty) {
                     if (finalEmail.isEmpty)
@@ -206,14 +209,18 @@ class _SignInPageState extends State<SignInPage> {
                           .signInWithEmailAndPassword(
                               email: finalEmail, password: finalPassword)
                           .then((val) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                              (Route<dynamic> route) => false,
+                        );
                         setState(() {
                           loading = false;
                         });
                       });
                     } on FirebaseAuthException catch (e) {
-                      /*Fluttertoast.showToast(
-                            msg: 'error: ${e.message.toString()}');*/
-                      print(e.message.toString());
+                      Fluttertoast.showToast(msg: e.message.toString());
                       setState(() {
                         loading = false;
                       });
@@ -250,40 +257,70 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(
                 height: 16,
               ),
-              Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  color: Color(0xFF2550A0),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                alignment: Alignment.center,
-                child: Text(
-                  'Facebook',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+              InkWell(
+                onTap: () {
+                  signInWithFacebook().then((result) {
+                    if (result.user != null) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HomePage();
+                          },
+                        ),
+                      );
+                    }
+                  });
+                },
+                child: Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF2550A0),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Facebook',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
               SizedBox(
                 height: 16,
               ),
-              Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  color: Color(0xFF18A82E),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                alignment: Alignment.center,
-                child: Text(
-                  'Google',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+              InkWell(
+                onTap: () {
+                  googleSignInHelper().then((result) {
+                    if (result.currentUser != null) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HomePage();
+                          },
+                        ),
+                      );
+                    }
+                  });
+                },
+                child: Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF18A82E),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Google',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),

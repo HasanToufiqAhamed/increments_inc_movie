@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/list/movie_list.dart';
 import 'package:increments_inc_movie/list/movie_slider_list.dart';
+import 'package:increments_inc_movie/pages/movie_details_page.dart';
 
 class MovieMainPage extends StatefulWidget {
   const MovieMainPage({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _MovieMainPageState extends State<MovieMainPage> {
                     height: MediaQuery.of(context).size.width / 2.1,
                     enlargeCenterPage: true,
                     enableInfiniteScroll: false,
-                    initialPage: 2,
+                    initialPage: 0,
                     autoPlay: false,
                   ),
                 ),
@@ -80,10 +81,21 @@ class _MovieMainPageState extends State<MovieMainPage> {
                         style: TextStyle(color: Colors.white, fontSize: 24),
                       ),
                       Spacer(),
-                      Icon(
-                        CupertinoIcons.right_chevron,
-                        color: MyColors.backgroundColorReg,
-                        size: 24,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MovieDetailsPage(imdbMovieId: 'tt4396862')
+                            ),
+                          );
+                        },
+                        child: Icon(
+                          CupertinoIcons.right_chevron,
+                          color: MyColors.backgroundColorReg,
+                          size: 24,
+                        ),
                       )
                     ],
                   ),

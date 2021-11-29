@@ -8,38 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:596667637016:android:357dd8ebcd6a3c3721926d",
+        "mobilesdk_app_id": "1:596667637016:android:f3f418c3a2e51a2e21926d",
         "android_client_info": {
-          "package_name": "com.example.increments_inc_movie"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "596667637016-k2go1m0bi9hiohc72vcs70pnmaql47p3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCs4YcP-ARKagY2xvyFIg9AglSHuWGi7fI"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "596667637016-k2go1m0bi9hiohc72vcs70pnmaql47p3.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:596667637016:android:ad0d3ae14d6936b121926d",
-        "android_client_info": {
-          "package_name": "com.hasantoufiqahamed.firebasefirestoreloginregistration"
+          "package_name": "com.toufiq.movieapp"
         }
       },
       "oauth_client": [
