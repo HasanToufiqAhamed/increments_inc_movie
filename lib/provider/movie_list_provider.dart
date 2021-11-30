@@ -18,7 +18,7 @@ class MovieListProvider with ChangeNotifier {
           'utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com',
           'lookup',
           {
-            'term': 'run',
+            'term': 'hello',
             'country': 'uk',
           },
         ),

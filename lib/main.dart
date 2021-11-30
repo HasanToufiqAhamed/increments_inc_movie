@@ -80,13 +80,17 @@ class _SplashPageState extends State<SplashPage> {
         child: Container(
           padding: const EdgeInsets.all(30),
           alignment: Alignment.center,
-          child: Text(
-            'WELCOME',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: MyColors.mainColor,
-            ),
+          child: Row(
+            children: [
+              Text(
+                'INCREMENTS INC',
+                style: TextStyle(color: MyColors.mainColor, fontSize: 30),
+              ),
+              Text(
+                '.',
+                style: TextStyle(color: Color(0xff6c63ff), fontSize: 30),
+              ),
+            ],
           ),
         ),
       ),

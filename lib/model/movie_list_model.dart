@@ -73,44 +73,16 @@ class Result {
 class ExternalIds {
   ExternalIds({
     this.imdb,
-    this.tmdb,
-    this.iva,
-    this.facebook,
-    this.rottenTomatoes,
-    this.wikiData,
-    this.ivaRating,
-    this.gracenote,
   });
 
   Imdb? imdb;
-  Imdb? tmdb;
-  Iva? iva;
-  dynamic? facebook;
-  dynamic? rottenTomatoes;
-  Imdb? wikiData;
-  dynamic? ivaRating;
-  dynamic? gracenote;
 
   factory ExternalIds.fromJson(Map<String, dynamic> json) => ExternalIds(
     imdb: Imdb.fromJson(json["imdb"]),
-    tmdb: Imdb.fromJson(json["tmdb"]),
-    iva: Iva.fromJson(json["iva"]),
-    facebook: json["facebook"],
-    rottenTomatoes: json["rotten_tomatoes"],
-    wikiData: Imdb.fromJson(json["wiki_data"]),
-    ivaRating: json["iva_rating"],
-    gracenote: json["gracenote"],
   );
 
   Map<String, dynamic> toJson() => {
     "imdb": imdb!.toJson(),
-    "tmdb": tmdb!.toJson(),
-    "iva": iva!.toJson(),
-    "facebook": facebook,
-    "rotten_tomatoes": rottenTomatoes,
-    "wiki_data": wikiData!.toJson(),
-    "iva_rating": ivaRating,
-    "gracenote": gracenote,
   };
 }
 
