@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/helper/checker.dart';
+import 'package:increments_inc_movie/helper/sign_in_helper/facebook_sign_in.dart';
 import 'package:increments_inc_movie/helper/sign_in_helper/google_sign_in.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
+import 'package:increments_inc_movie/pages/sign_in_pages/sign_up_page.dart';
 
 import '../opt_page.dart';
 
@@ -190,10 +192,21 @@ class _SignInPageState extends State<SignInPage> {
                             SizedBox(
                               width: 6,
                             ),
-                            Text(
-                              'Register',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          SignUpPage()
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Register',
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 16),
+                              ),
                             ),
                           ],
                         ),
@@ -284,17 +297,13 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         InkWell(
                           onTap: () {
-                            /*signInWithFacebook().then((result) {
-                        if (result.user != null) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return HomePage();
-                              },
-                            ),
-                          );
-                        }
-                      });*/
+                            signInWithFacebook().then((result) {
+                              if (result.user != null) {
+                                setState(() {
+
+                                });
+                              }
+                            });
                           },
                           child: Container(
                             width: double.maxFinite,

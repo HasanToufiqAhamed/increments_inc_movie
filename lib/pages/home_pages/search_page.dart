@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:increments_inc_movie/list/movie_slider_list.dart';
@@ -39,15 +40,16 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   child: TextFormField(
+                    autofocus: true,
                     focusNode: oneFocus,
                     controller: _textFieldCtrl,
                     maxLines: 1,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       counterText: '',
@@ -67,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
                 child: _movieList == null
                     ? Container(
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'No search result',
                           style: TextStyle(
                             fontSize: 24,
@@ -80,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
                         itemCount: _movieList!.results!.length,
                         itemBuilder: (context, index) => Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             movieSliderListLayout(

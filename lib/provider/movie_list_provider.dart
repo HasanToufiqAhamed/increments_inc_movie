@@ -8,6 +8,10 @@ class MovieListProvider with ChangeNotifier {
 
   MovieListModel get movieList => _movieListProvider!;
 
+  bool _loading = true;
+
+  bool get loading => _loading;
+
   getMovieList() async {
     var response = await http.get(
         Uri.https(
@@ -27,6 +31,7 @@ class MovieListProvider with ChangeNotifier {
         });
     if (response.statusCode == 200) {
       _movieListProvider = MovieListModel.fromJson(jsonDecode(response.body));
+      _loading = false;
 
       notifyListeners();
     } else {

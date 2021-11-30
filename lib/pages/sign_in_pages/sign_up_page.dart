@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/helper/checker.dart';
+import 'package:increments_inc_movie/pages/sign_in_pages/sign_in_page.dart';
 
 import '../home_page.dart';
 
@@ -214,9 +215,20 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(
                           width: 6,
                         ),
-                        Text(
-                          'Log in',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SignInPage()
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Log in',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                         ),
                       ],
                     ),

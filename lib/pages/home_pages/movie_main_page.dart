@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/list/movie_list.dart';
+import 'package:increments_inc_movie/list/movie_list_loading.dart';
 import 'package:increments_inc_movie/list/movie_slider_list.dart';
 import 'package:increments_inc_movie/model/movie_list_model.dart';
 import 'package:increments_inc_movie/pages/movie_details_page.dart';
@@ -19,8 +20,7 @@ class MovieMainPage extends StatefulWidget {
 }
 
 class _MovieMainPageState extends State<MovieMainPage> {
-
-  List<Result>? _movieList=[];
+  List<Result>? _movieList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -67,19 +67,33 @@ class _MovieMainPageState extends State<MovieMainPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                CarouselSlider.builder(
-                  itemCount: _movieList!.length,
-                  itemBuilder: (ctx, index, realIdx) {
-                    return movieSliderListLayout(movie: _movieList![index],);
-                  },
-                  options: CarouselOptions(
-                    height: MediaQuery.of(context).size.width / 2.1,
-                    enlargeCenterPage: true,
-                    enableInfiniteScroll: false,
-                    initialPage: 0,
-                    autoPlay: false,
-                  ),
-                ),
+                movieListProvider.loading
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          height: MediaQuery.of(context).size.width / 2.1,
+                          decoration: BoxDecoration(
+                              color: MyColors.backgroundColorReg,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
+                      )
+                    : CarouselSlider.builder(
+                        itemCount: _movieList!.length,
+                        itemBuilder: (ctx, index, realIdx) {
+                          return movieSliderListLayout(
+                            movie: _movieList![index],
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: MediaQuery.of(context).size.width / 2.1,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll: false,
+                          initialPage: 0,
+                          autoPlay: false,
+                        ),
+                      ),
                 SizedBox(
                   height: 41,
                 ),
@@ -120,14 +134,25 @@ class _MovieMainPageState extends State<MovieMainPage> {
                       16 +
                       13 +
                       16,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _movieList!.length,
-                    itemBuilder: (context, index) {
-                      return movieListLayout(movie: _movieList![index],);
-                    },
-                  ),
+                  child: movieListProvider.loading
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return movieListLayoutLoading();
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _movieList!.length,
+                          itemBuilder: (context, index) {
+                            return movieListLayout(
+                              movie: _movieList![index],
+                            );
+                          },
+                        ),
                 ),
                 SizedBox(
                   height: 34,
@@ -158,14 +183,25 @@ class _MovieMainPageState extends State<MovieMainPage> {
                       16 +
                       13 +
                       16,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _movieList!.length,
-                    itemBuilder: (context, index) {
-                      return movieListLayout(movie: _movieList![index],);
-                    },
-                  ),
+                  child: movieListProvider.loading
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return movieListLayoutLoading();
+                          },
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _movieList!.length,
+                          itemBuilder: (context, index) {
+                            return movieListLayout(
+                              movie: _movieList![index],
+                            );
+                          },
+                        ),
                 ),
                 SizedBox(
                   height: 34,

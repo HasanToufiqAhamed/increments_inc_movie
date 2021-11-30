@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
 import 'package:increments_inc_movie/provider/movie_list_provider.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -95,5 +95,6 @@ class _SplashPageState extends State<SplashPage> {
 
   void readMovieList() {
     context.read<MovieListProvider>().getMovieList();
+    OneSignal.shared.setAppId('88cf959a-4c1c-40f0-9c52-465f428f63bc');
   }
 }

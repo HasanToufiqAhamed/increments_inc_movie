@@ -37,7 +37,7 @@ class movieSliderListLayout extends StatelessWidget {
               ),
               width: double.maxFinite,
               height: MediaQuery.of(context).size.width / 2.1,
-              color: Colors.white,
+              color: MyColors.backgroundColorReg,
             ),
             Positioned(
               bottom: 12,

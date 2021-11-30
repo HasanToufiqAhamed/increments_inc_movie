@@ -1,12 +1,14 @@
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/cons_file/text_file.dart';
+import 'package:increments_inc_movie/helper/sign_in_helper/facebook_sign_in.dart';
 import 'package:increments_inc_movie/helper/sign_in_helper/google_sign_in.dart';
 import 'package:increments_inc_movie/pages/sign_in_pages/sign_in_welcome.dart';
 
@@ -31,28 +33,28 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Welcome to.',
                         style: TextStyle(
                           color: MyColors.backgroundColorReg,
                           fontSize: 22,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
-                      Text(
+                      const Text(
                         'Increments Inc.',
                         style: TextStyle(
                           color: MyColors.mainColor,
                           fontSize: 32,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 64,
                       ),
                       Text(
-                        '$f_text',
+                        f_text,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: MyColors.backgroundColorReg,
@@ -79,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 18),
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       'Sign in',
                       style: TextStyle(
                         color: MyColors.backgroundColor,
@@ -93,7 +95,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 16,
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    final result = await FacebookAuth.i.login(
+                      permissions: ['public_profile', 'email'],
+                    );
+
+                    if(result.status==LoginStatus.success){
+                      Fluttertoast.showToast(msg: 'Success');
+                    } else {
+                      print('result.message');
+                      print(result.message);
+                      Fluttertoast.showToast(msg: '${result.message}');
+                    }
+
                     /*signInWithFacebook().then((result) {
                         if (result.user != null) {
                           setState(() {
