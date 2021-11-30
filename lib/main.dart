@@ -22,7 +22,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => MovieListProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ));
   });
 }
@@ -38,8 +38,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: MyColors.backgroundColor,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
-      home: SplashPage(),
+      home: const SplashPage(),
     );
   }
 }
@@ -61,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   startTime() async {
-    return Timer(Duration(seconds: 2), navigationPage);
+    return Timer(const Duration(seconds: 2), navigationPage);
   }
 
   void navigationPage() {
@@ -78,10 +80,10 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(30),
           alignment: Alignment.center,
           child: Row(
-            children: [
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
               Text(
                 'INCREMENTS INC',
                 style: TextStyle(color: MyColors.mainColor, fontSize: 30),

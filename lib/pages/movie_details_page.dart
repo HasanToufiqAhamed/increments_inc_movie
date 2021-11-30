@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/model/movie_details_model.dart';
-import 'package:increments_inc_movie/web_view_page.dart';
+import 'package:increments_inc_movie/pages/web_view_page.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   String imdbMovieId, image;

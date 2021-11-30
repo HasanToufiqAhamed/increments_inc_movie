@@ -5,7 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
   String url;
-  WebViewPage({required this.url});
+  WebViewPage({Key? key, required this.url}) : super(key: key);
 
   @override
   State<WebViewPage> createState() => _WebViewPageState();
@@ -13,9 +13,9 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
 
+  @override
   void initState() {
     super.initState();
-    // Enable hybrid composition.
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 

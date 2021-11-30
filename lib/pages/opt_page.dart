@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:increments_inc_movie/cons_file/my_colors.dart';
 import 'package:increments_inc_movie/pages/home_page.dart';
+import 'package:timer_builder/timer_builder.dart';
 
 import 'home_pages/movie_main_page.dart';
 
@@ -29,11 +30,15 @@ class _OtpPageState extends State<OtpPage> {
 
   FirebaseAuth auth = FirebaseAuth.instance;
   String? _verificationCode;
+  bool? _loadingResend = false;
+
+  DateTime? alert;
 
   @override
   void initState() {
     super.initState();
     _verifyPhone();
+    alert = DateTime.now().add(Duration(minutes: 0));
   }
 
   _verifyPhone() async {
@@ -48,10 +53,9 @@ class _OtpPageState extends State<OtpPage> {
         print('faild');
       },
       codeSent: (String? verficationID, int? resendToken) {
-        print('codeSent');
-
         setState(() {
           _verificationCode = verficationID;
+          alert = DateTime.now().add(Duration(minutes: 1));
         });
       },
       codeAutoRetrievalTimeout: (String verificationID) {
@@ -112,130 +116,48 @@ class _OtpPageState extends State<OtpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IntrinsicWidth(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.backgroundColorReg.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: MyColors.backgroundColorReg.withOpacity(0.5),
-                          width: 1,
+                    child: InkWell(
+                      onTap: () {
+                        oneFocus.requestFocus();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                      child: TextFormField(
-                        focusNode: oneFocus,
-                        controller: oneText,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
-                        maxLines: 1,
-                        maxLength: 1,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                        onFieldSubmitted: (v) {
-                          FocusScope.of(context).requestFocus(twoFocus);
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          counterText: '',
-                        ),
-                        onChanged: (value) {
-                          if (value != '')
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: oneFocus,
+                          controller: oneText,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          maxLines: 1,
+                          maxLength: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                          onFieldSubmitted: (v) {
                             FocusScope.of(context).requestFocus(twoFocus);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  IntrinsicWidth(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.backgroundColorReg.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: MyColors.backgroundColorReg.withOpacity(0.5),
-                          width: 1,
-                        ),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                      child: TextFormField(
-                        focusNode: twoFocus,
-                        controller: twoText,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
-                        maxLines: 1,
-                        maxLength: 2,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          counterText: '',
-                        ),
-                        onChanged: (value) {
-                          if (value == '') {
-                            FocusScope.of(context).requestFocus(oneFocus);
-                          } else if (twoText.text.length == 2)
-                            FocusScope.of(context).requestFocus(threeFocus);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  IntrinsicWidth(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.backgroundColorReg.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: MyColors.backgroundColorReg.withOpacity(0.5),
-                          width: 1,
-                        ),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                      child: TextFormField(
-                        focusNode: threeFocus,
-                        controller: threeText,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                        /*onFieldSubmitted: (v) {
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            counterText: '',
+                          ),
+                          onChanged: (value) {
+                            if (value != '')
                               FocusScope.of(context).requestFocus(twoFocus);
-                            },*/
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
+                          },
                         ),
-                        onChanged: (value) {
-                          if (value == '') {
-                            FocusScope.of(context).requestFocus(twoFocus);
-                          } else if (threeText.text.length == 2)
-                            FocusScope.of(context).requestFocus(fourFocus);
-                        },
                       ),
                     ),
                   ),
@@ -243,42 +165,144 @@ class _OtpPageState extends State<OtpPage> {
                     width: 15,
                   ),
                   IntrinsicWidth(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: MyColors.backgroundColorReg.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: MyColors.backgroundColorReg.withOpacity(0.5),
-                          width: 1,
+                    child: InkWell(
+                      onTap: () {
+                        twoFocus.requestFocus();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: twoFocus,
+                          controller: twoText,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          maxLines: 1,
+                          maxLength: 2,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            counterText: '',
+                          ),
+                          onChanged: (value) {
+                            if (value == '') {
+                              FocusScope.of(context).requestFocus(oneFocus);
+                            } else if (twoText.text.length == 2)
+                              FocusScope.of(context).requestFocus(threeFocus);
+                          },
                         ),
                       ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                      child: TextFormField(
-                        focusNode: fourFocus,
-                        controller: fourText,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  IntrinsicWidth(
+                    child: InkWell(
+                      onTap: () {
+                        threeFocus.requestFocus();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
                         ),
-                        /*onFieldSubmitted: (v) {
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: threeFocus,
+                          controller: threeText,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                          /*onFieldSubmitted: (v) {
+                                FocusScope.of(context).requestFocus(twoFocus);
+                              },*/
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            if (value == '') {
                               FocusScope.of(context).requestFocus(twoFocus);
-                            },*/
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
+                            } else if (threeText.text.length == 2)
+                              FocusScope.of(context).requestFocus(fourFocus);
+                          },
                         ),
-                        onChanged: (value) {
-                          if (value == '') {
-                            FocusScope.of(context).requestFocus(threeFocus);
-                          }
-                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  IntrinsicWidth(
+                    child: InkWell(
+                      onTap: () {
+                        fourFocus.requestFocus();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: MyColors.backgroundColorReg.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: MyColors.backgroundColorReg.withOpacity(0.5),
+                            width: 1,
+                          ),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+                        child: TextFormField(
+                          focusNode: fourFocus,
+                          controller: fourText,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          ],
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                          /*onFieldSubmitted: (v) {
+                                FocusScope.of(context).requestFocus(twoFocus);
+                              },*/
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            if (value == '') {
+                              FocusScope.of(context).requestFocus(threeFocus);
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -298,10 +322,49 @@ class _OtpPageState extends State<OtpPage> {
                   SizedBox(
                     width: 6,
                   ),
-                  Text(
-                    '30:00',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
+                  TimerBuilder.scheduled([alert!], builder: (context) {
+                    var now = DateTime.now();
+                    var reached = now.compareTo(alert!) >= 0;
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          _loadingResend!
+                              ? Container(
+                                  height: 16,
+                                  width: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : !reached
+                                  ? TimerBuilder.periodic(Duration(seconds: 1),
+                                      alignment: Duration.zero,
+                                      builder: (context) {
+                                      var now = DateTime.now();
+                                      var remaining = alert!.difference(now);
+                                      return Text(
+                                        formatDuration(remaining),
+                                        style: TextStyle(color: Colors.white),
+                                      );
+                                    })
+                                  : GestureDetector(
+                                      child: Text(
+                                        'Resend code',
+                                        style: TextStyle(
+                                          color: MyColors.mainColor,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        _verifyPhone();
+                                      },
+                                    ),
+                        ],
+                      ),
+                    );
+                  }),
                   SizedBox(
                     width: 6,
                   ),
@@ -380,5 +443,14 @@ class _OtpPageState extends State<OtpPage> {
         ),
       ),
     );
+  }
+
+  String formatDuration(Duration d) {
+    String f(int n) {
+      return n.toString().padLeft(0, '0');
+    }
+
+    d += Duration(microseconds: 999999);
+    return '${f(d.inMinutes)}:${f(d.inSeconds % 60)}';
   }
 }

@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var isSelected = 1;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +50,8 @@ class _HomePageState extends State<HomePage> {
               flex: 1,
               child: PageView(
                 controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
                   MovieMainPage(),
                   SearchPage(),
                   DownloadPage(),
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             icon,
             size: isSelected == pos? 34 : 24,
             color: isSelected == pos
-                ? Color(0xff6c63ff)
+                ? const Color(0xff6c63ff)
                 : MyColors.backgroundColorReg,
           ),
         ],
